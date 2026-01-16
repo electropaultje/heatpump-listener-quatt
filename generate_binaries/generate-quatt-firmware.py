@@ -26,7 +26,9 @@ compiled_file = f"{build_path}/.pioenvs/{project_name}/firmware.bin"
 
 variants = [
     {"version": "quatt-single-2relay"},
-    {"version": "quatt-duo-2relay"}
+    {"version": "quatt-duo-2relay"},
+    {"version": "quatt-single-4relay"},
+    {"version": "quatt-duo-4relay"}
 ]
 for v in variants:
     # STEP 3: Compile generated YAML into ESPHome binary file
