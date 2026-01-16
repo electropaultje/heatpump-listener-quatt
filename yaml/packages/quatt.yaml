@@ -300,6 +300,8 @@ sensor:
   # Function 6 registers
   - platform: modbus_spy
     name: "${prefix}Compressor level set by Cic"
+    accuracy_decimals: 0
+    state_class: "measurement"
     device_address: ${device_address}
     register_address: 42000
     filters:
@@ -312,6 +314,8 @@ sensor:
       - throttle: ${throttling_value}
   - platform: modbus_spy
     name: "${prefix}Pump level set by Cic"
+    accuracy_decimals: 2
+    state_class: "measurement"
     device_address: ${device_address}
     register_address: 42016
     filters:

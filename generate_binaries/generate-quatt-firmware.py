@@ -25,10 +25,10 @@ build_path = f"../yaml/.esphome/build/{project_name}"
 compiled_file = f"{build_path}/.pioenvs/{project_name}/firmware.bin"
 
 variants = [
-    {"version": "quatt-single-2relay"},
-    {"version": "quatt-duo-2relay"},
-    {"version": "quatt-single-4relay"},
-    {"version": "quatt-duo-4relay"}
+    {"version": "quatt-single-2relay", "folder": "single"},
+    {"version": "quatt-duo-2relay", "folder": "duo"},
+    {"version": "quatt-single-4relay", "folder": "single"},
+    {"version": "quatt-duo-4relay", "folder": "duo"}
 ]
 for v in variants:
     # STEP 3: Compile generated YAML into ESPHome binary file
@@ -41,12 +41,12 @@ for v in variants:
 
         # STEP 4: Copy compiled file into version binary in correct publish directory
         version_filename = f"{v['version']}-v{version_number.replace('.', '-')}.bin"
-        version_path = f"../{version_filename}"
+        version_path = f"../{v['folder']}/{version_filename}"
 
         shutil.copy(compiled_file, version_path)
 
         # STEP 5: Copy compiled file into latest binary in correct publish directory
-        latest_filename = f"../{v['version']}-latest.bin"
+        latest_filename = f"../{v['folder']}/{v['version']}-latest.bin"
         shutil.copy(compiled_file, latest_filename)
 
         # STEP 6: Calculate MD5 checksum
@@ -54,11 +54,11 @@ for v in variants:
         print(f"Calculated checksum: {md5}")
 
         # STEP 7: Write calculated checksum into latest file
-        pathlib.Path(f"../{v['version']}-latest.md5").write_text(md5)
+        pathlib.Path(f"../{v['folder']}/{v['version']}-latest.md5").write_text(md5)
         print(f"Checksum written to file")
 
         # STEP 8: Update release file
-        out_yaml = release_file_json.replace("##MD5##", md5).replace("##FILE##", version_filename).replace("##VERSION##", version_number)
+        out_yaml = release_file_json.replace("##MD5##", md5).replace("##FILE##", version_filename).replace("##FOLDER##", v['folder']).replace("##VERSION##", version_number)
         pathlib.Path(f"../{v['version']}-release.json").write_text(out_yaml)
     else:
         print(f"Compilation failed for {v['version']}")
