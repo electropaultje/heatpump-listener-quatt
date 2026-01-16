@@ -1,0 +1,48 @@
+substitutions:
+  device_name: heatpump-listener
+  friendly_name: Heat Pump Listener - Quatt
+  time_timezone: "Europe/Amsterdam"
+  throttling_value: 10s
+  version: quatt-duo-2relay
+
+packages:
+  base: !include packages/base.yaml
+  pcb: !include packages/pcb3.yaml
+  heatpump1: !include
+    file: packages/quatt.yaml
+    vars:
+      id_prefix: "hp1"
+      prefix: "HP1 - "
+      device_address: 0x01
+  heatpump2: !include
+    file: packages/quatt.yaml
+    vars:
+      id_prefix: "hp2"
+      prefix: "HP2 - "
+      device_address: 0x01
+
+switch:
+  - platform: gpio
+    pin: GPIO22
+    name: Relay 1
+    restore_mode: RESTORE_DEFAULT_OFF
+    web_server:
+      sorting_group_id: sorting_group_module_hardware
+  - platform: gpio
+    pin: GPIO23
+    name: Relay 2
+    restore_mode: RESTORE_DEFAULT_OFF
+    web_server:
+      sorting_group_id: sorting_group_module_hardware
+  - platform: gpio
+    pin: GPIO26
+    name: Relay 3
+    restore_mode: RESTORE_DEFAULT_OFF
+    web_server:
+      sorting_group_id: sorting_group_module_hardware
+  - platform: gpio
+    pin: GPIO25
+    name: Relay 4
+    restore_mode: RESTORE_DEFAULT_OFF
+    web_server:
+      sorting_group_id: sorting_group_module_hardware
