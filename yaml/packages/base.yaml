@@ -1,0 +1,147 @@
+esphome:
+  name: heatpump-listener
+  friendly_name: Heat Pump Listener - Quatt
+  min_version: 2025.12.0
+  project:
+    name: "electropaultje.heatpump-listener"
+    version: "1.0.0"
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+external_components:
+  - source: github://electropaultje/modbus-spy-esphome@main
+  #- source: github://electropaultje/modbus-spy-esphome@latest-stable
+
+logger:
+  level: INFO
+  logs:
+    component: ERROR
+
+api:
+
+ota:
+  - platform: esphome
+  - platform: http_request
+    id: ota_http_request
+
+update:
+  - platform: http_request
+    name: Firmware update
+    id: firmware_update
+    source: https://raw.githubusercontent.com/electropaultje/heatpump-listener-quatt/main/${version}-release.json
+
+http_request:
+  id: http_request_component
+  useragent: esphome/device
+  timeout: 10s
+  verify_ssl: false
+
+wifi:
+  ap:
+    ssid: "heatpump"
+    password: "heatpump"
+
+captive_portal:
+
+modbus_spy:
+  id: modbusspy
+  log_not_configured_data: false
+
+light:
+  - platform: binary
+    id: led_yellow
+    output: led_yellow_output
+
+button:
+  - platform: restart
+    name: Restart heatpump listener
+  - platform: factory_reset
+    id: button_factory_reset
+
+script:
+  - id: blink_light
+    parameters:
+      calling_component: string
+    then:
+      - if:
+          condition:
+            lambda: return id(yellow_led_select).current_option() == calling_component;
+          then:
+            - light.turn_on: led_yellow
+            - delay: 250ms
+            - light.turn_off: led_yellow
+
+number:
+  - platform: template
+    name: Flow sensor calibration
+    id: flow_sensor_calibration
+    min_value: 1
+    max_value: 1000
+    mode: box
+    step: 1
+    restore_value: true
+    optimistic: true
+    entity_category: config
+    unit_of_measurement: pulses/l
+  - platform: template
+    name: Dallas temperature 1 offset
+    id: dallas_1_offset
+    min_value: -10.0
+    max_value: 10.0
+    initial_value: 0
+    mode: box
+    step: 0.1
+    restore_value: true
+    optimistic: true
+    entity_category: config
+    unit_of_measurement: °C
+  - platform: template
+    name: Dallas temperature 2 offset
+    id: dallas_2_offset
+    min_value: -10.0
+    max_value: 10.0
+    initial_value: 0
+    mode: box
+    step: 0.1
+    restore_value: true
+    optimistic: true
+    entity_category: config
+    unit_of_measurement: °C
+  - platform: template
+    name: Dallas temperature 3 offset
+    id: dallas_3_offset
+    min_value: -10.0
+    max_value: 10.0
+    initial_value: 0
+    mode: box
+    step: 0.1
+    restore_value: true
+    optimistic: true
+    entity_category: config
+    unit_of_measurement: °C
+
+select:
+  - platform: template
+    name: Yellow LED Status
+    id: yellow_led_select
+    optimistic: true
+    restore_value: true
+    entity_category: config
+    initial_option: Modbus
+    options:
+      - "Off"
+      - Modbus
+      - Pulse
+
+web_server:
+  id: webserver_component
+  port: 80
+  version: 3
+  sorting_groups:
+    - id: sorting_group_alarms
+      name: Alarms
+    - id: sorting_group_module_hardware
+      name: Module hardware

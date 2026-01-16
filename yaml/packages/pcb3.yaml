@@ -1,0 +1,110 @@
+uart:
+  id: uart_component
+  rx_pin: GPIO32
+  tx_pin: GPIO33
+  rx_full_threshold: 1
+  rx_timeout: 1
+
+modbus_spy:
+  flow_control_pin: GPIO21
+
+light:
+  - platform: status_led
+    id: led_red
+    pin:
+      number: GPIO19
+
+output:
+  - platform: gpio
+    id: led_yellow_output
+    pin: GPIO18
+
+one_wire:
+  - id: one_wire_1
+    platform: gpio
+    pin: GPIO4
+  - id: one_wire_2
+    platform: gpio
+    pin:
+      number: 5
+      ignore_strapping_warning: true
+  - id: one_wire_3
+    platform: gpio
+    pin: GPIO27
+
+sensor:
+  - platform: dallas_temp
+    id: temperature_sensor_1
+    name: Dallas temperature 1
+    one_wire_id: one_wire_1
+    icon: mdi:thermometer
+    update_interval: 15s
+    filters:
+      - lambda: return x + id(dallas_1_offset).state;
+      - delta: 0.1
+    web_server:
+      sorting_group_id: sorting_group_module_hardware
+  - platform: dallas_temp
+    id: temperature_sensor_2
+    name: Dallas temperature 2
+    one_wire_id: one_wire_2
+    icon: mdi:thermometer
+    update_interval: 15s
+    filters:
+      - lambda: return x + id(dallas_2_offset).state;
+      - delta: 0.1
+    web_server:
+      sorting_group_id: sorting_group_module_hardware
+  - platform: dallas_temp
+    id: temperature_sensor_3
+    name: Dallas temperature 3
+    one_wire_id: one_wire_3
+    icon: mdi:thermometer
+    update_interval: 15s
+    filters:
+      - lambda: return x + id(dallas_3_offset).state;
+      - delta: 0.1
+    web_server:
+      sorting_group_id: sorting_group_module_hardware
+  - platform: pulse_counter
+    pin: GPIO35
+    name: Pulse meter
+    unit_of_measurement: l/hr
+    filters:
+      - lambda: return x / id(flow_sensor_calibration).state * 60;
+      - delta: 1
+    total:
+      name: Total pulses
+      unit_of_measurement: l
+      filters:
+        - lambda: return x / id(flow_sensor_calibration).state;
+        - delta: 1
+      web_server:
+        sorting_group_id: sorting_group_module_hardware
+    on_value:
+      - script.execute:
+          id: blink_light
+          calling_component: Pulse
+    web_server:
+      sorting_group_id: sorting_group_module_hardware
+
+binary_sensor:
+  - platform: gpio
+    id: factory_reset_pin
+    pin:
+      number: GPIO34
+      inverted: true
+    on_click:
+      min_length: 2000ms
+      max_length: 20000ms
+      then:
+        - repeat:
+            count: 5
+            then:
+              - light.turn_on: led_yellow
+              - light.turn_on: led_red
+              - delay: 200ms
+              - light.turn_off: led_yellow
+              - light.turn_off: led_red
+              - delay: 200ms
+        - button.press: button_factory_reset

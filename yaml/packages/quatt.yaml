@@ -1,0 +1,420 @@
+uart:
+  parity: EVEN
+  baud_rate: 19200
+
+sensor:
+  - platform: modbus_spy
+    id: ${id_prefix}working_mode_actual
+    device_address: ${device_address}
+    register_address: 42100
+    filters:
+      - throttle: ${throttling_value}
+    on_value:
+      then:
+        - text_sensor.template.publish:
+            id: "${id_prefix}working_mode_text"
+            state: !lambda |-
+              switch ((int)x)
+              {
+                case 0:
+                  return "Standby";
+                case 1:
+                  return "Cooling";
+                case 2:
+                  return "Heating";
+                case 3:
+                  return "Hot water";
+                case 4:
+                  return "Forced defrosting";
+                case 5:
+                  return "Data writing";
+                case 6:
+                  return "Inspection (reserved)";
+                default:
+                  return "Reserved";
+              }
+  - platform: modbus_spy
+    name: "${prefix}AC voltage"
+    device_class: "voltage"
+    accuracy_decimals: 0
+    state_class: "measurement"
+    unit_of_measurement: "V"
+    device_address: ${device_address}
+    register_address: 42101
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}AC current"
+    device_class: "current"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "A"
+    device_address: ${device_address}
+    register_address: 42102
+    filters:
+      - throttle: ${throttling_value}
+      - multiply: 0.1
+  - platform: modbus_spy
+    name: "${prefix}Compressor working speed demand"
+    device_class: "frequency"
+    accuracy_decimals: 0
+    state_class: "measurement"
+    unit_of_measurement: "Hz"
+    device_address: ${device_address}
+    register_address: 42103
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}Compressor working speed actual"
+    device_class: "frequency"
+    accuracy_decimals: 0
+    state_class: "measurement"
+    unit_of_measurement: "Hz"
+    device_address: ${device_address}
+    register_address: 42104
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}Fan speed demand"
+    accuracy_decimals: 0
+    state_class: "measurement"
+    unit_of_measurement: "rpm"
+    device_address: ${device_address}
+    register_address: 42105
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}Fan speed actual"
+    accuracy_decimals: 0
+    state_class: "measurement"
+    unit_of_measurement: "rpm"
+    device_address: ${device_address}
+    register_address: 42106
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}Electric Expansion Valve"
+    state_class: "measurement"
+    device_address: ${device_address}
+    register_address: 42108
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}Outside temperature"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_address: ${device_address}
+    register_address: 42111
+    filters:
+      - throttle: ${throttling_value}
+      - offset: -3000
+      - multiply: 0.01
+  - platform: modbus_spy
+    name: "${prefix}Evaporator coil temperature"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_address: ${device_address}
+    register_address: 42112
+    filters:
+      - throttle: ${throttling_value}
+      - offset: -3000
+      - multiply: 0.01
+  - platform: modbus_spy
+    name: "${prefix}Discharge temperature"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_address: ${device_address}
+    register_address: 42113
+    filters:
+      - throttle: ${throttling_value}
+      - offset: -3000
+      - multiply: 0.01
+  - platform: modbus_spy
+    name: "${prefix}Suction temperature"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_address: ${device_address}
+    register_address: 42114
+    filters:
+      - throttle: ${throttling_value}
+      - offset: -3000
+      - multiply: 0.01
+  - platform: modbus_spy
+    name: "${prefix}Evaporator pressure"
+    device_class: "pressure"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "bar"
+    device_address: ${device_address}
+    register_address: 42117
+    filters:
+      - throttle: ${throttling_value}
+      - multiply: 0.1
+  - platform: modbus_spy
+    name: "${prefix}Condensor pressure"
+    device_class: "pressure"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "bar"
+    device_address: ${device_address}
+    register_address: 42118
+    filters:
+      - throttle: ${throttling_value}
+      - multiply: 0.1
+  - platform: modbus_spy
+    name: "${prefix}Condensing temperature"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_address: ${device_address}
+    register_address: 42132
+    filters:
+      - throttle: ${throttling_value}
+      - offset: -3000
+      - multiply: 0.01
+  - platform: modbus_spy
+    name: "${prefix}Evaporating temperature"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_address: ${device_address}
+    register_address: 42133
+    filters:
+      - throttle: ${throttling_value}
+      - offset: -3000
+      - multiply: 0.01
+  - platform: modbus_spy
+    name: "${prefix}Water in temperature"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_address: ${device_address}
+    register_address: 42134
+    filters:
+      - throttle: ${throttling_value}
+      - offset: -3000
+      - multiply: 0.01
+  - platform: modbus_spy
+    name: "${prefix}Water out temperature"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_address: ${device_address}
+    register_address: 42135
+    filters:
+      - throttle: ${throttling_value}
+      - offset: -3000
+      - multiply: 0.01
+  - platform: modbus_spy
+    name: "${prefix}Condensor coil temperature"
+    device_class: "temperature"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "°C"
+    icon: "mdi:thermometer"
+    device_address: ${device_address}
+    register_address: 42136
+    filters:
+      - throttle: ${throttling_value}
+      - offset: -3000
+      - multiply: 0.01
+  - platform: modbus_spy
+    name: "${prefix}Pump power"
+    device_class: "power"
+    accuracy_decimals: 1
+    state_class: "measurement"
+    unit_of_measurement: "W"
+    device_address: ${device_address}
+    register_address: 42138
+    filters:
+      - throttle: ${throttling_value}
+      - multiply: 0.1
+  - platform: modbus_spy
+    name: "${prefix}Pump flow"
+    device_class: "volume_flow_rate"
+    accuracy_decimals: 2
+    state_class: "measurement"
+    unit_of_measurement: "L/h"
+    icon: "mdi:gauge"
+    device_address: ${device_address}
+    register_address: 42139
+    filters:
+      - throttle: ${throttling_value}
+      - multiply: 0.618
+
+  - platform: modbus_spy
+    name: "${prefix}Failure state 1"
+    device_address: ${device_address}
+    register_address: 42120
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}Failure state 2"
+    device_address: ${device_address}
+    register_address: 42121
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}Failure state 3"
+    device_address: ${device_address}
+    register_address: 42122
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}Firmware version"
+    device_address: ${device_address}
+    register_address: 42123
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}EEPROM version"
+    device_address: ${device_address}
+    register_address: 42124
+    filters:
+      - throttle: ${throttling_value}
+    on_raw_value:
+      - script.execute:
+          id: blink_light
+          calling_component: Modbus
+
+  # Function 6 registers
+  - platform: modbus_spy
+    name: "${prefix}Compressor level set by Cic"
+    device_address: ${device_address}
+    register_address: 42000
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}Working mode set by Cic"
+    device_address: ${device_address}
+    register_address: 44000
+    filters:
+      - throttle: ${throttling_value}
+  - platform: modbus_spy
+    name: "${prefix}Pump level set by Cic"
+    device_address: ${device_address}
+    register_address: 42016
+    filters:
+      - throttle: ${throttling_value}
+      - multiply: 0.01
+      - clamp:
+          min_value: 0
+          max_value: 10
+          ignore_out_of_range: true
+
+binary_sensor:
+  - platform: modbus_spy
+    name: "${prefix}Fan low speed mode"
+    device_address: ${device_address}
+    register_address: 42109
+    bit: 0
+  - platform: modbus_spy
+    name: "${prefix}Bottom heater"
+    device_address: ${device_address}
+    register_address: 42109
+    bit: 2
+  - platform: modbus_spy
+    name: "${prefix}Crankcase heater"
+    device_address: ${device_address}
+    register_address: 42109
+    bit: 3
+  - platform: modbus_spy
+    name: "${prefix}Fan defrost speed mode"
+    device_address: ${device_address}
+    register_address: 42109
+    bit: 4
+  - platform: modbus_spy
+    name: "${prefix}Fan high speed mode"
+    device_address: ${device_address}
+    register_address: 42109
+    bit: 5
+  - platform: modbus_spy
+    name: "${prefix}4way valve"
+    device_address: ${device_address}
+    register_address: 42109
+    bit: 6
+  - platform: modbus_spy
+    name: "${prefix}Pump relay"
+    device_address: ${device_address}
+    register_address: 42109
+    bit: 11
+  - platform: modbus_spy
+    name: "${prefix}Defrost mode"
+    icon: "mdi:snowflake"
+    device_address: ${device_address}
+    register_address: 42119
+  - platform: modbus_spy
+    name: "${prefix}Alarm - Main line current"
+    icon: "mdi:message-alert"
+    device_address: ${device_address}
+    register_address: 42120
+    bit: 0
+    web_server:
+      sorting_group_id: sorting_group_alarms
+  - platform: modbus_spy
+    name: "${prefix}Info - Compressor oil return"
+    icon: "mdi:message-alert"
+    device_address: ${device_address}
+    register_address: 42120
+    bit: 3
+  - platform: modbus_spy
+    name: "${prefix}Alarm - High pressure switch"
+    icon: "mdi:message-alert"
+    device_address: ${device_address}
+    register_address: 42120
+    bit: 4
+    web_server:
+      sorting_group_id: sorting_group_alarms
+  - platform: modbus_spy
+    name: "${prefix}Alarm - 1st start pre-heat"
+    icon: "mdi:message-alert"
+    device_address: ${device_address}
+    register_address: 42120
+    bit: 6
+    web_server:
+      sorting_group_id: sorting_group_alarms
+  - platform: modbus_spy
+    name: "${prefix}Alarm - AC high/low voltage"
+    icon: "mdi:message-alert"
+    device_address: ${device_address}
+    register_address: 42120
+    bit: 9
+    web_server:
+      sorting_group_id: sorting_group_alarms
+  - platform: modbus_spy
+    name: "${prefix}Alarm - Low pressure switch"
+    icon: "mdi:message-alert"
+    device_address: ${device_address}
+    register_address: 42120
+    bit: 12
+    web_server:
+      sorting_group_id: sorting_group_alarms
+  - platform: modbus_spy
+    name: "${prefix}Pump mode set by Cic"
+    device_address: ${device_address}
+    register_address: 42011
+
+text_sensor:
+  - platform: template
+    name: "${prefix}Working mode actual"
+    id: "${id_prefix}working_mode_text"
