@@ -314,13 +314,13 @@ sensor:
       - throttle: ${throttling_value}
   - platform: modbus_spy
     name: "${prefix}Pump level set by Cic"
-    accuracy_decimals: 2
+    accuracy_decimals: 1
     state_class: "measurement"
     device_address: ${device_address}
     register_address: 42016
     filters:
       - throttle: ${throttling_value}
-      - multiply: 0.01
+      - multiply: 0.1
       - clamp:
           min_value: 0
           max_value: 10
