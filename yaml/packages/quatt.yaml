@@ -321,10 +321,6 @@ sensor:
     filters:
       - throttle: ${throttling_value}
       - multiply: 0.1
-      - clamp:
-          min_value: 0
-          max_value: 10
-          ignore_out_of_range: true
 
 binary_sensor:
   - platform: modbus_spy

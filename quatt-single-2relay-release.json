@@ -1,12 +1,12 @@
 {
   "name": "Heatpump Listener - Quatt",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "builds": [
     {
       "chipFamily": "ESP32",
       "ota": {
-        "md5": "2427f909cbfa2e9f864467948066eabb",
-        "path": "/electropaultje/heatpump-listener-quatt/main/single/quatt-single-2relay-v1-0-4.bin",
+        "md5": "6c2bf5789cd970cd590c115ce4a6c99d",
+        "path": "/electropaultje/heatpump-listener-quatt/main/single/quatt-single-2relay-v1-0-5.bin",
         "release_url": "https://github.com/electropaultje/heatpump-listener-quatt/blob/main/RELEASE_NOTES.md#version-100",
         "summary": "First official release"
       }
