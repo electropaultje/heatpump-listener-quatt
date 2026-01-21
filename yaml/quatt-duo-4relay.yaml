@@ -19,7 +19,7 @@ packages:
     vars:
       id_prefix: "hp2"
       prefix: "HP2 - "
-      device_address: 0x01
+      device_address: 0x02
 
 switch:
   - platform: gpio

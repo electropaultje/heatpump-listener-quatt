@@ -8,7 +8,7 @@
         "md5": "##MD5##",
         "path": "/electropaultje/heatpump-listener-quatt/main/##FOLDER##/##FILE##",
         "release_url": "https://github.com/electropaultje/heatpump-listener-quatt/blob/main/RELEASE_NOTES.md#version-100",
-        "summary": "First official release"
+        "summary": "Fixed device address for duo units"
       }
     }
   ]
