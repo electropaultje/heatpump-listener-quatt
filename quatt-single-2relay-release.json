@@ -1,14 +1,14 @@
 {
   "name": "Heatpump Listener - Quatt",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "builds": [
     {
       "chipFamily": "ESP32",
       "ota": {
-        "md5": "bf7f8667e7241e06fcd3c5e2ed41afb7",
-        "path": "/electropaultje/heatpump-listener-quatt/main/single/quatt-single-2relay-v1-0-6.bin",
-        "release_url": "https://github.com/electropaultje/heatpump-listener-quatt/blob/main/RELEASE_NOTES.md#version-100",
-        "summary": "Fixed device address for duo units"
+        "md5": "f347dffd56beec5bb9b02fc43dca950d",
+        "path": "/electropaultje/heatpump-listener-quatt/main/single/quatt-single-2relay-v1-0-7.bin",
+        "release_url": "https://github.com/electropaultje/heatpump-listener-quatt/blob/main/RELEASE_NOTES.md#version-107",
+        "summary": "Updated modbusspy version to facilitate CiC changes"
       }
     }
   ]
