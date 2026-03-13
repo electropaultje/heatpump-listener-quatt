@@ -43,6 +43,12 @@ wifi:
   ap:
     ssid: "heatpump"
     password: "heatpump"
+  on_connect:
+    - delay: 5s
+    - logger.log:
+        format: "Checking for updates"
+        level: INFO
+    - update.check: firmware_update
 
 captive_portal:
 
