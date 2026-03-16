@@ -394,7 +394,7 @@ binary_sensor:
     web_server:
       sorting_group_id: sorting_group_alarms
   - platform: modbus_spy
-    name: "${prefix}Alarm - AC high/low voltage"
+    name: "${prefix}Alarm - AC high low voltage"
     icon: "mdi:message-alert"
     device_address: ${device_address}
     register_address: 42120

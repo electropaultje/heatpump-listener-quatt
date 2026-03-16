@@ -4,7 +4,7 @@ esphome:
   min_version: 2025.12.0
   project:
     name: "electropaultje.heatpump-listener"
-    version: "1.0.7"
+    version: "1.1.0"
 
 esp32:
   board: esp32dev
@@ -15,7 +15,7 @@ external_components:
   - source: github://electropaultje/modbus-spy-esphome@latest-stable
 
 logger:
-  level: INFO
+  level: DEBUG
   logs:
     component: ERROR
 
@@ -80,6 +80,16 @@ script:
             - delay: 250ms
             - light.turn_off: led_yellow
 
+switch:
+  - platform: template
+    name: Log unconfigured modbus data
+    optimistic: true
+    entity_category: config
+    turn_on_action:
+      - modbus_spy.set_log_unconfigured_items: true
+    turn_off_action:
+      - modbus_spy.set_log_unconfigured_items: false
+
 number:
   - platform: template
     name: Flow sensor calibration
@@ -141,6 +151,46 @@ select:
       - "Off"
       - Modbus
       - Pulse
+  - platform: template
+    name: Log level
+    id: log_level
+    optimistic: true
+    restore_value: true
+    entity_category: config
+    initial_option: "INFO"
+    options:
+      - "NONE"
+      - "ERROR"
+      - "WARN"
+      - "INFO"
+      - "DEBUG"
+    on_value:
+      then:
+        - if:
+            condition:
+              lambda: 'return id(log_level).current_option() == "NONE";'
+            then:
+              - logger.set_level: NONE
+        - if:
+            condition:
+              lambda: 'return id(log_level).current_option() == "ERROR";'
+            then:
+              - logger.set_level: ERROR
+        - if:
+            condition:
+              lambda: 'return id(log_level).current_option() == "WARN";'
+            then:
+              - logger.set_level: WARN
+        - if:
+            condition:
+              lambda: 'return id(log_level).current_option() == "INFO";'
+            then:
+              - logger.set_level: INFO
+        - if:
+            condition:
+              lambda: 'return id(log_level).current_option() == "DEBUG";'
+            then:
+              - logger.set_level: DEBUG
 
 web_server:
   id: webserver_component
