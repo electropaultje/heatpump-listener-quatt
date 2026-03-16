@@ -7,8 +7,8 @@
       "ota": {
         "md5": "##MD5##",
         "path": "/electropaultje/heatpump-listener-quatt/main/##FOLDER##/##FILE##",
-        "release_url": "https://github.com/electropaultje/heatpump-listener-quatt/blob/main/RELEASE_NOTES.md#version-107",
-        "summary": "Updated modbusspy version to facilitate CiC changes"
+        "release_url": "https://github.com/electropaultje/heatpump-listener-quatt/blob/main/RELEASE_NOTES.md#version-110",
+        "summary": "Set log levels during runtime"
       }
     }
   ]

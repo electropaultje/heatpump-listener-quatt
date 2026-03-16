@@ -1,14 +1,14 @@
 {
   "name": "Heatpump Listener - Quatt",
-  "version": "1.0.7",
+  "version": "1.1.0",
   "builds": [
     {
       "chipFamily": "ESP32",
       "ota": {
-        "md5": "7dcc2b82d41a13c3058a99566128f814",
-        "path": "/electropaultje/heatpump-listener-quatt/main/duo/quatt-duo-2relay-v1-0-7.bin",
-        "release_url": "https://github.com/electropaultje/heatpump-listener-quatt/blob/main/RELEASE_NOTES.md#version-107",
-        "summary": "Updated modbusspy version to facilitate CiC changes"
+        "md5": "aa7dc6fafeb5c67e0fb85d10326b9f43",
+        "path": "/electropaultje/heatpump-listener-quatt/main/duo/quatt-duo-2relay-v1-1-0.bin",
+        "release_url": "https://github.com/electropaultje/heatpump-listener-quatt/blob/main/RELEASE_NOTES.md#version-110",
+        "summary": "Set log levels during runtime"
       }
     }
   ]

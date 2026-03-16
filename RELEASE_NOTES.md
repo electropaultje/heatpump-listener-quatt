@@ -6,3 +6,7 @@ Fixed device address to 0x02 for the second unit in case of the Quatt Duo
 
 ## Version 1.0.7
 Updated modbusspy to facilitate the latest CiC changes
+
+## Version 1.1.0
+Added dropdown to select log level during runtime
+Added switch to enable not configured modbus data logging during runtime
